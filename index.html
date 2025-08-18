@@ -539,17 +539,10 @@
 
         <!-- Participant Information Section -->
         <div id="headerSubtitle" style="padding: 20px 40px; background: linear-gradient(135deg, #f0f9ff 0%, #ecfdf5 100%); border-bottom: 1px solid rgba(148, 163, 184, 0.2);">
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: auto auto; gap: 40px; margin-bottom: 16px;">
-              <!-- First column of first row -->
-              <div>Item 1</div>
-                <!-- Second column of first row -->
-              <div>Item 2</div>
-                <!-- Third column of first row -->
-              <div>Item 3</div>
-                <!-- First column of second row -->
-              <div style="grid-column: span 1;">Item 4</div>
-                  <!-- Second column of second row -->
-              <div style="grid-column: span 1;">Item 5</div>
+            <div style="display: grid; grid-template-columns: repeat(3, minmax(250px, 1fr)); /* 3 columns in the first implicit row */
+                  grid-template-rows: auto auto; /* Two rows, height determined by content */
+                  gap: 10px; /* Optional: adds space between grid items */.grid-item:nth-child(4),.grid-item:nth-child(5) {grid-column: span 2; /* Make the 4th and 5th items span 2 columns */
+                  }gap: 20px; margin-bottom: 16px;"> <div class="form-group" style="margin-bottom: 0;">
                 </div>
                 <div class="form-group" style="margin-bottom: 0;">
                     <label for="learnerName" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">👨‍🎓 Learner's Name</label>
