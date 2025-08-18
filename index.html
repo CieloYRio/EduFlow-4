@@ -539,7 +539,18 @@
 
         <!-- Participant Information Section -->
         <div id="headerSubtitle" style="padding: 20px 40px; background: linear-gradient(135deg, #f0f9ff 0%, #ecfdf5 100%); border-bottom: 1px solid rgba(148, 163, 184, 0.2);">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 16px;">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: auto auto; gap: 40px; margin-bottom: 16px;">
+              <!-- First column of first row -->
+              <div>Item 1</div>
+                <!-- Second column of first row -->
+              <div>Item 2</div>
+                <!-- Third column of first row -->
+              <div>Item 3</div>
+                <!-- First column of second row -->
+              <div style="grid-column: span 1;">Item 4</div>
+                  <!-- Second column of second row -->
+              <div style="grid-column: span 1;">Item 5</div>
+                </div>
                 <div class="form-group" style="margin-bottom: 0;">
                     <label for="learnerName" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">👨‍🎓 Learner's Name</label>
                     <input type="text" id="learnerName" class="form-control" placeholder="Enter learner's name" style="background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(59, 130, 246, 0.3);">
@@ -552,8 +563,6 @@
                     <label for="schoolName" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">🏫 School/Institution</label>
                     <input type="text" id="schoolName" class="form-control" placeholder="Enter school/institution" style="background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(16, 185, 129, 0.3);">
                 </div>
-
-                
                 <div class="form-group" style="margin-bottom: 0;">
                     <label for="displayGrade" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">🎓 Grade Level</label>
                     <input type="text" id="displayGrade" class="form-control" placeholder="Grade level will appear here" readonly style="background: rgba(243, 244, 246, 0.8); border: 1px solid rgba(156, 163, 175, 0.3); color: #6b7280;">
