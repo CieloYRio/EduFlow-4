@@ -537,35 +537,40 @@
             <p>Smart Curriculum Design for Modern Educators</p>
         </div>
 
-        <!-- Participant Information Section -->
-        <div id="headerSubtitle" style="padding: 20px 40px; background: linear-gradient(135deg, #f0f9ff 0%, #ecfdf5 100%); border-bottom: 1px solid rgba(148, 163, 184, 0.2);">
-            <div style="display: grid; grid-template-columns: repeat(3, minmax(250px, 1fr)); /* 3 columns in the first implicit row */
-                  grid-template-rows: auto auto; /* Two rows, height determined by content */
-                  gap: 10px; /* Optional: adds space between grid items */.grid-item:nth-child(4),.grid-item:nth-child(5) {grid-column: span 2; /* Make the 4th and 5th items span 2 columns */
-                  }gap: 20px; margin-bottom: 16px;"> <div class="form-group" style="margin-bottom: 0;">
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label for="learnerName" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">👨‍🎓 Learner's Name</label>
-                    <input type="text" id="learnerName" class="form-control" placeholder="Enter learner's name" style="background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(59, 130, 246, 0.3);">
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label for="teacherName" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">👩‍🏫 Teacher's Name</label>
-                    <input type="text" id="teacherName" class="form-control" placeholder="Enter teacher's name" style="background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(16, 185, 129, 0.3);">
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label for="schoolName" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">🏫 School/Institution</label>
-                    <input type="text" id="schoolName" class="form-control" placeholder="Enter school/institution" style="background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(16, 185, 129, 0.3);">
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label for="displayGrade" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">🎓 Grade Level</label>
-                    <input type="text" id="displayGrade" class="form-control" placeholder="Grade level will appear here" readonly style="background: rgba(243, 244, 246, 0.8); border: 1px solid rgba(156, 163, 175, 0.3); color: #6b7280;">
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label for="displayYear" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">📅 Academic Year</label>
-                    <input type="text" id="displayYear" class="form-control" placeholder="Academic year will appear here" readonly style="background: rgba(243, 244, 246, 0.8); border: 1px solid rgba(156, 163, 175, 0.3); color: #6b7280;">
-                </div>
-            </div>
+       <!-- Participant Information Section -->
+<div id="headerSubtitle" style="padding: 20px 40px; background: linear-gradient(135deg, #f0f9ff 0%, #ecfdf5 100%); border-bottom: 1px solid rgba(148, 163, 184, 0.2);">
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(3, minmax(250px, 1fr));
+        grid-template-rows: auto auto;
+        gap: 20px;
+        margin-bottom: 16px;
+    ">
+        <!-- Row 1 -->
+        <div class="form-group" style="margin-bottom: 0;">
+            <label for="learnerName" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">👨‍🎓 Learner's Name</label>
+            <input type="text" id="learnerName" class="form-control" placeholder="Enter learner's name" style="background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(59, 130, 246, 0.3);">
         </div>
+        <div class="form-group" style="margin-bottom: 0;">
+            <label for="teacherName" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">👩‍🏫 Teacher's Name</label>
+            <input type="text" id="teacherName" class="form-control" placeholder="Enter teacher's name" style="background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(16, 185, 129, 0.3);">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+            <label for="schoolName" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">🏫 School/Institution</label>
+            <input type="text" id="schoolName" class="form-control" placeholder="Enter school/institution" style="background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(16, 185, 129, 0.3);">
+        </div>
+
+        <!-- Row 2 -->
+        <div class="form-group" style="margin-bottom: 0; grid-column: span 1;">
+            <label for="displayGrade" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">🎓 Grade Level</label>
+            <input type="text" id="displayGrade" class="form-control" placeholder="Grade level will appear here" readonly style="background: rgba(243, 244, 246, 0.8); border: 1px solid rgba(156, 163, 175, 0.3); color: #6b7280;">
+        </div>
+        <div class="form-group" style="margin-bottom: 0; grid-column: span 2;">
+            <label for="displayYear" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">📅 Academic Year</label>
+            <input type="text" id="displayYear" class="form-control" placeholder="Academic year will appear here" readonly style="background: rgba(243, 244, 246, 0.8); border: 1px solid rgba(156, 163, 175, 0.3); color: #6b7280;">
+        </div>
+    </div>
+</div>
 
         <div class="nav-tabs">
             <button class="nav-tab active" onclick="showView('overview')">📊 Overview</button>
