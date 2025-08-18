@@ -560,14 +560,16 @@
             <input type="text" id="schoolName" class="form-control" placeholder="Enter school/institution" style="background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(16, 185, 129, 0.3);">
         </div>
 
-        <!-- Row 2 -->
-        <div class="form-group" style="margin-bottom: 0; grid-column: span 1;">
-            <label for="displayGrade" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">🎓 Grade Level</label>
-            <input type="text" id="displayGrade" class="form-control" placeholder="Grade level will appear here" readonly style="background: rgba(243, 244, 246, 0.8); border: 1px solid rgba(156, 163, 175, 0.3); color: #6b7280;">
-        </div>
-        <div class="form-group" style="margin-bottom: 0; grid-column: span 2;">
-            <label for="displayYear" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">📅 Academic Year</label>
-            <input type="text" id="displayYear" class="form-control" placeholder="Academic year will appear here" readonly style="background: rgba(243, 244, 246, 0.8); border: 1px solid rgba(156, 163, 175, 0.3); color: #6b7280;">
+        <!-- Row 2 (centered) -->
+        <div style="grid-column: 1 / span 3; display: flex; justify-content: center; gap: 20px;">
+            <div class="form-group" style="margin-bottom: 0; width: 250px;">
+                <label for="displayGrade" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">🎓 Grade Level</label>
+                <input type="text" id="displayGrade" class="form-control" placeholder="Grade level will appear here" readonly style="background: rgba(243, 244, 246, 0.8); border: 1px solid rgba(156, 163, 175, 0.3); color: #6b7280;">
+            </div>
+            <div class="form-group" style="margin-bottom: 0; width: 250px;">
+                <label for="displayYear" style="font-size: 0.9rem; color: #374151; margin-bottom: 6px;">📅 Academic Year</label>
+                <input type="text" id="displayYear" class="form-control" placeholder="Academic year will appear here" readonly style="background: rgba(243, 244, 246, 0.8); border: 1px solid rgba(156, 163, 175, 0.3); color: #6b7280;">
+            </div>
         </div>
     </div>
 </div>
