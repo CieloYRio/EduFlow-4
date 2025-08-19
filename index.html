@@ -816,10 +816,10 @@
                                         <th style="padding: 12px; border: 1px solid #1e40af; font-weight: 600; color: white;">Months</th>
                                         <th style="padding: 12px; border: 1px solid #1e40af; font-weight: 600; color: white;">Core Concepts</th>
                                         <th style="padding: 12px; border: 1px solid #1e40af; font-weight: 600; color: white;">Guiding Questions</th>
-                                        <th style="padding: 12px; border: 1px solid #1e40af; font-weight: 600; color: white;">Skills & Competencies</th>
+                                        <th style="padding: 12px; border: 1px solid #1e40af; font-weight: 600; color: white;">Skills</th>
                                         <th style="padding: 12px; border: 1px solid #1e40af; font-weight: 600; color: white;">Activities</th>
-                                        <th style="padding: 12px; border: 1px solid #1e40af; font-weight: 600; color: white;">Assessment</th>
-                                        <th style="padding: 12px; border: 1px solid #1e40af; font-weight: 600; color: white;">Resources & Materials</th>
+                                        <th style="padding: 12px; border: 1px solid #1e40af; font-weight: 600; color: white;">Evidence of Learning</th>
+                                        <th style="padding: 12px; border: 1px solid #1e40af; font-weight: 600; color: white;">Resources</th>
                                         <th style="padding: 12px; border: 1px solid #1e40af; font-weight: 600; color: white;">Standard Alignments</th>
                                     </tr>
                                 </thead>
@@ -4317,6 +4317,106 @@
         document.addEventListener('click', function(event) {
             if (event.target.classList.contains('modal')) {
                 event.target.classList.remove('active');
+            }
+            
+        });
+        // Simple Translation System - Add this RIGHT HERE
+        const translations = {
+            en: {
+                interfaceLanguage: "🌐 Interface Language",
+                learnerName: "Learner Name", 
+                teacherName: "Teacher Name",
+                countryRegion: "Country/Region",
+                calendarSystem: "Calendar System",
+                schoolYearStart: "School Year Start",
+                academicYear: "Academic Year",
+                gradeLevel: "Grade Level"
+            },
+            es: {
+                interfaceLanguage: "🌐 Idioma de Interfaz",
+                learnerName: "Nombre del Estudiante",
+                teacherName: "Nombre del Profesor", 
+                countryRegion: "País/Región",
+                calendarSystem: "Sistema de Calendario",
+                schoolYearStart: "Inicio del Año Escolar",
+                academicYear: "Año Académico",
+                gradeLevel: "Nivel de Grado"
+            },
+            fr: {
+                interfaceLanguage: "🌐 Langue d'Interface",
+                learnerName: "Nom de l'Apprenant",
+                teacherName: "Nom de l'Enseignant",
+                countryRegion: "Pays/Région", 
+                calendarSystem: "Système de Calendrier",
+                schoolYearStart: "Début de l'Année Scolaire",
+                academicYear: "Année Académique",
+                gradeLevel: "Niveau Scolaire"
+            },
+            de: {
+                interfaceLanguage: "🌐 Oberflächensprache",
+                learnerName: "Name des Lernenden",
+                teacherName: "Lehrername",
+                countryRegion: "Land/Region",
+                calendarSystem: "Kalendersystem", 
+                schoolYearStart: "Schuljahresbeginn",
+                academicYear: "Schuljahr",
+                gradeLevel: "Klassenstufe"
+            },
+            zh: {
+                interfaceLanguage: "🌐 界面语言",
+                learnerName: "学习者姓名",
+                teacherName: "教师姓名",
+                countryRegion: "国家/地区",
+                calendarSystem: "日历系统",
+                schoolYearStart: "学年开始",
+                academicYear: "学年",
+                gradeLevel: "年级"
+            },
+            ja: {
+                interfaceLanguage: "🌐 インターフェース言語",
+                learnerName: "学習者名",
+                teacherName: "教師名", 
+                countryRegion: "国/地域",
+                calendarSystem: "カレンダーシステム",
+                schoolYearStart: "学年開始",
+                academicYear: "学年度",
+                gradeLevel: "学年"
+            }
+        };
+
+        function changeLanguage(lang) {
+            const t = translations[lang];
+            if (!t) return;
+
+            // Update all the labels
+            const labels = {
+                'globalInterfaceLanguage': t.interfaceLanguage,
+                'learnerName': t.learnerName,
+                'teacherName': t.teacherName,
+                'globalCountryRegion': t.countryRegion,
+                'globalCalendarSystem': t.calendarSystem,
+                'globalSchoolYearStart': t.schoolYearStart,
+                'globalAcademicYear': t.academicYear,
+                'globalGradeLevel': t.gradeLevel
+            };
+
+            // Apply translations
+            for (const [id, text] of Object.entries(labels)) {
+                const label = document.querySelector(`label[for="${id}"]`);
+                if (label) label.textContent = text;
+            }
+
+            // Save language preference
+            localStorage.setItem('selectedLanguage', lang);
+        }
+
+        // Load saved language on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLang = localStorage.getItem('selectedLanguage') || 'en';
+            const select = document.getElementById('globalInterfaceLanguage');
+            if (select) {
+                select.value = savedLang;
+                changeLanguage(savedLang);
             }
         });
     </script>
