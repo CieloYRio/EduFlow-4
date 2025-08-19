@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduFlow Planner - Smart Curriculum Design</title>
+    <title> data-i18n=EduFlow Planner - Smart Curriculum Design</title>
     <style>
         * {
             margin: 0;
@@ -4385,29 +4385,43 @@
         };
 
         function changeLanguage(lang) {
-            const t = translations[lang];
-            if (!t) return;
+    // Debug: Check if function is called
+    alert('Language changed to: ' + lang);
+    
+    const t = translations[lang];
+    if (!t) {
+        alert('Translation not found for: ' + lang);
+        return;
+    }
 
-            // Update all the labels
-            const labels = {
-                'globalInterfaceLanguage': t.interfaceLanguage,
-                'learnerName': t.learnerName,
-                'teacherName': t.teacherName,
-                'globalCountryRegion': t.countryRegion,
-                'globalCalendarSystem': t.calendarSystem,
-                'globalSchoolYearStart': t.schoolYearStart,
-                'globalAcademicYear': t.academicYear,
-                'globalGradeLevel': t.gradeLevel
-            };
+    // Update all the labels
+    const labels = {
+        'globalInterfaceLanguage': t.interfaceLanguage,
+        'learnerName': t.learnerName,
+        'teacherName': t.teacherName,
+        'globalCountryRegion': t.countryRegion,
+        'globalCalendarSystem': t.calendarSystem,
+        'globalSchoolYearStart': t.schoolYearStart,
+        'globalAcademicYear': t.academicYear,
+        'globalGradeLevel': t.gradeLevel
+    };
 
-            // Apply translations
-            for (const [id, text] of Object.entries(labels)) {
-                const label = document.querySelector(`label[for="${id}"]`);
-                if (label) label.textContent = text;
-            }
+    // Apply translations with debug
+    for (const [id, text] of Object.entries(labels)) {
+        const label = document.querySelector(`label[for="${id}"]`);
+        if (label) {
+            console.log('Updating label for:', id, 'to:', text);
+            label.textContent = text;
+        } else {
+            console.log('Label not found for:', id);
+        }
+    }
 
-            // Save language preference
-            localStorage.setItem('selectedLanguage', lang);
+    // Save language preference
+    localStorage.setItem('selectedLanguage', lang);
+}
+
+', lang);
         }
 
         // Load saved language on page load
