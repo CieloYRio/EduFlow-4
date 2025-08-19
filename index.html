@@ -4384,28 +4384,42 @@
             }
         };
 
-        function changeLanguage(lang) {
-            alert('Changing to: ' + lang);
+         function changeLanguage(lang) {
+            const t = translations[lang];
+            if (!t) return;
             
-            // Let's see what labels exist
-            const allLabels = document.querySelectorAll('label');
-            let labelTexts = [];
-            allLabels.forEach(label => {
-                labelTexts.push('"' + label.textContent.trim() + '"');
+            // Direct text replacement approach
+            const textReplacements = {
+                "Learner's Name": t.learnerName,
+                "Teacher's Name": t.teacherName,
+                "Country/Region": t.countryRegion,
+                "Calendar System": t.calendarSystem,
+                "School Year Start": t.schoolYearStart,
+                "Academic Year": t.academicYear,
+                "Grade Level": t.gradeLevel,
+                "Language Interface": t.interfaceLanguage
+            };
+            
+            // Find and replace text in all elements
+            document.querySelectorAll('*').forEach(element => {
+                // Only check text nodes, not nested elements
+                if (element.children.length === 0) {
+                    const text = element.textContent.trim();
+                    if (textReplacements[text]) {
+                        element.textContent = textReplacements[text];
+                    }
+                }
             });
             
-            if (labelTexts.length > 0) {
-                alert('Found ' + labelTexts.length + ' labels: ' + labelTexts.slice(0, 5).join(', '));
-            } else {
-                alert('No labels found at all!');
-            }
+            // Also try labels specifically
+            document.querySelectorAll('label').forEach(label => {
+                const text = label.textContent.trim();
+                if (textReplacements[text]) {
+                    label.textContent = textReplacements[text];
+                }
+            });
             
-            // Try to change just one thing as a test
-            const testElement = document.querySelector('h1, h2, .tab-button');
-            if (testElement) {
-                testElement.style.color = 'red';
-                alert('Changed something to red as a test');
-            }
+            localStorage.setItem('selectedLanguage', lang);
         }
 
         // Load saved language on page load
