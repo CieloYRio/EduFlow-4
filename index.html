@@ -4422,15 +4422,6 @@
 }
 
 ', lang);
-        }
-
-        // Load saved language on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const savedLang = localStorage.getItem('selectedLanguage') || 'en';
-            const select = document.getElementById('globalInterfaceLanguage');
-            if (select) {
-                select.value = savedLang;
-                changeLanguage(savedLang);
             }
         });
     </script>
