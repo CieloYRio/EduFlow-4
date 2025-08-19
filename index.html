@@ -4313,14 +4313,14 @@
             }, 100);
         });
 
-        // Close modals when clicking outside
+         // Close modals when clicking outside
         document.addEventListener('click', function(event) {
             if (event.target.classList.contains('modal')) {
                 event.target.classList.remove('active');
             }
-            
-        });
-        // Simple Translation System - Add this RIGHT HERE
+        }); // <- This was missing the closing brace!
+
+        // Simple Translation System
         const translations = {
             en: {
                 interfaceLanguage: "🌐 Interface Language",
@@ -4385,14 +4385,8 @@
         };
 
         function changeLanguage(lang) {
-            // Debug: Check if function is called
-            alert('Language changed to: ' + lang);
-            
             const t = translations[lang];
-            if (!t) {
-                alert('Translation not found for: ' + lang);
-                return;
-            }
+            if (!t) return;
 
             // Update all the labels
             const labels = {
@@ -4406,14 +4400,11 @@
                 'globalGradeLevel': t.gradeLevel
             };
 
-            // Apply translations with debug
+            // Apply translations
             for (const [id, text] of Object.entries(labels)) {
                 const label = document.querySelector(`label[for="${id}"]`);
                 if (label) {
-                    console.log('Updating label for:', id, 'to:', text);
                     label.textContent = text;
-                } else {
-                    console.log('Label not found for:', id);
                 }
             }
 
