@@ -4385,53 +4385,27 @@
         };
 
         function changeLanguage(lang) {
-            const t = translations[lang];
-            if (!t) return;
-
-            // Find labels by their text content instead of 'for' attribute
-            const labelMappings = [
-                { text: 'Learner\'s Name', newText: t.learnerName },
-                { text: 'Teacher\'s Name', newText: t.teacherName },
-                { text: 'Country/Region', newText: t.countryRegion },
-                { text: 'Calendar System', newText: t.calendarSystem },
-                { text: 'School Year Start', newText: t.schoolYearStart },
-                { text: 'Academic Year', newText: t.academicYear },
-                { text: 'Grade Level', newText: t.gradeLevel },
-                { text: 'Language Interface', newText: t.interfaceLanguage },
-                { text: '🌐 Interface Language', newText: t.interfaceLanguage }
-            ];
-
-            // Update labels by finding them by text content
-            labelMappings.forEach(mapping => {
-                const labels = document.querySelectorAll('label');
-                labels.forEach(label => {
-                    if (label.textContent.trim() === mapping.text) {
-                        label.textContent = mapping.newText;
-                    }
-                });
+            alert('Changing to: ' + lang);
+            
+            // Let's see what labels exist
+            const allLabels = document.querySelectorAll('label');
+            let labelTexts = [];
+            allLabels.forEach(label => {
+                labelTexts.push('"' + label.textContent.trim() + '"');
             });
-
-            // Also try the original method for labels with 'for' attributes
-            const labels = {
-                'globalInterfaceLanguage': t.interfaceLanguage,
-                'learnerName': t.learnerName,
-                'teacherName': t.teacherName,
-                'globalCountryRegion': t.countryRegion,
-                'globalCalendarSystem': t.calendarSystem,
-                'globalSchoolYearStart': t.schoolYearStart,
-                'globalAcademicYear': t.academicYear,
-                'globalGradeLevel': t.gradeLevel
-            };
-
-            for (const [id, text] of Object.entries(labels)) {
-                const label = document.querySelector(`label[for="${id}"]`);
-                if (label) {
-                    label.textContent = text;
-                }
+            
+            if (labelTexts.length > 0) {
+                alert('Found ' + labelTexts.length + ' labels: ' + labelTexts.slice(0, 5).join(', '));
+            } else {
+                alert('No labels found at all!');
             }
-
-            // Save language preference
-            localStorage.setItem('selectedLanguage', lang);
+            
+            // Try to change just one thing as a test
+            const testElement = document.querySelector('h1, h2, .tab-button');
+            if (testElement) {
+                testElement.style.color = 'red';
+                alert('Changed something to red as a test');
+            }
         }
 
         // Load saved language on page load
