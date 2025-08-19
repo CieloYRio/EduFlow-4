@@ -4388,7 +4388,30 @@
             const t = translations[lang];
             if (!t) return;
 
-            // Update all the labels
+            // Find labels by their text content instead of 'for' attribute
+            const labelMappings = [
+                { text: 'Learner\'s Name', newText: t.learnerName },
+                { text: 'Teacher\'s Name', newText: t.teacherName },
+                { text: 'Country/Region', newText: t.countryRegion },
+                { text: 'Calendar System', newText: t.calendarSystem },
+                { text: 'School Year Start', newText: t.schoolYearStart },
+                { text: 'Academic Year', newText: t.academicYear },
+                { text: 'Grade Level', newText: t.gradeLevel },
+                { text: 'Language Interface', newText: t.interfaceLanguage },
+                { text: '🌐 Interface Language', newText: t.interfaceLanguage }
+            ];
+
+            // Update labels by finding them by text content
+            labelMappings.forEach(mapping => {
+                const labels = document.querySelectorAll('label');
+                labels.forEach(label => {
+                    if (label.textContent.trim() === mapping.text) {
+                        label.textContent = mapping.newText;
+                    }
+                });
+            });
+
+            // Also try the original method for labels with 'for' attributes
             const labels = {
                 'globalInterfaceLanguage': t.interfaceLanguage,
                 'learnerName': t.learnerName,
@@ -4400,7 +4423,6 @@
                 'globalGradeLevel': t.gradeLevel
             };
 
-            // Apply translations
             for (const [id, text] of Object.entries(labels)) {
                 const label = document.querySelector(`label[for="${id}"]`);
                 if (label) {
