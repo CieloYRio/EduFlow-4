@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EduFlow Planner - Welcome</title>
+  <meta charset="UTF-8">
+  <title>EduFlow Planner - Login</title>
   <script type="module">
-    // Import Firebase SDKs
+    // Import Firebase SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } 
-      from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { 
+      getAuth, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword, 
+      signOut, 
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-    // Firebase config (yours)
+    // Your Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyByRBm1bsDCH2GccIxyiuWttdqOzUB6-KQ",
       authDomain: "eduflowplanner.firebaseapp.com",
@@ -20,103 +24,109 @@
       appId: "1:201580924502:web:09e4e881899395a67335f7"
     };
 
-    // Init Firebase
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // Redirect if already logged in
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        window.location.href = "index.html";
-      }
-    });
-
-    // Handle login
-    window.login = async () => {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = "index.html";
-      } catch (err) {
-        alert("Login failed: " + err.message);
-      }
-    };
-
-    // Handle signup
-    window.signup = async () => {
+    // Handle Sign Up
+    async function signUp() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       try {
         await createUserWithEmailAndPassword(auth, email, password);
-        alert("Account created successfully! You can now log in.");
-      } catch (err) {
-        alert("Signup failed: " + err.message);
+        alert("✅ Account created! You are now logged in.");
+      } catch (error) {
+        alert("Error: " + error.message);
       }
-    };
+    }
 
-    // Handle logout (you can add this button later in planner if needed)
-    window.logout = async () => {
+    // Handle Sign In
+    async function signIn() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert("🎉 Login successful!");
+        window.location.href = "planner.html"; // redirect to your main planner
+      } catch (error) {
+        alert("Error: " + error.message);
+      }
+    }
+
+    // Handle Sign Out
+    async function logOut() {
       await signOut(auth);
-      window.location.href = "welcome.html";
-    };
+      alert("🚪 Logged out successfully!");
+    }
+
+    // Keep user logged in
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("User is logged in:", user.email);
+      } else {
+        console.log("No user logged in.");
+      }
+    });
+
+    // Expose functions globally
+    window.signUp = signUp;
+    window.signIn = signIn;
+    window.logOut = logOut;
   </script>
+
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: "Poppins", sans-serif;
       background: linear-gradient(135deg, #2563eb, #3b82f6, #1d4ed8);
-      height: 100vh;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .login-box {
-      background: white;
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      color: white;
       text-align: center;
-      width: 300px;
+      padding: 50px;
     }
-    h1 {
-      color: #1d4ed8;
-      margin-bottom: 1rem;
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     }
+
     input {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
+      width: 90%;
+      padding: 12px;
+      margin: 10px 0;
       border: none;
-      border-radius: 6px;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    button {
+      background: #34d399;
+      border: none;
+      padding: 12px 20px;
+      margin: 10px;
+      border-radius: 10px;
+      font-weight: bold;
       cursor: pointer;
-      font-size: 1rem;
+      transition: 0.3s;
     }
-    .login-btn {
-      background: #2563eb;
-      color: white;
-    }
-    .signup-btn {
+
+    button:hover {
       background: #10b981;
-      color: white;
     }
   </style>
 </head>
 <body>
-  <div class="login-box">
+  <div class="card">
     <h1>EduFlow Planner</h1>
-    <p>Empowering educators to organize efficiently.</p>
-    <input type="email" id="email" placeholder="Email" required />
-    <input type="password" id="password" placeholder="Password" required />
-    <button class="login-btn" onclick="login()">Login</button>
-    <button class="signup-btn" onclick="signup()">Sign Up</button>
+    <p>Smart Curriculum Design for Educators</p>
+    <input type="email" id="email" placeholder="Enter your email" required>
+    <input type="password" id="password" placeholder="Enter your password" required>
+    <br>
+    <button onclick="signUp()">Sign Up</button>
+    <button onclick="signIn()">Login</button>
+    <button onclick="logOut()">Logout</button>
   </div>
 </body>
 </html>
