@@ -91,6 +91,16 @@ body::before {
     color: gray;
 }
 
+.remember-container {
+    margin-top: 15px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #334155;
+}
+
 .error-msg {
     color: #ef4444;
     margin-top: 10px;
@@ -112,12 +122,17 @@ body::before {
 
     <!-- Login Form -->
     <form id="loginForm">
-        <input type="text" id="localUsername" placeholder="Username (teacher)" />
-        <input type="password" id="localPassword" placeholder="Password" />
-        <input type="email" id="loginEmail" placeholder="Or Email (Firebase)" />
-        <input type="password" id="loginPassword" placeholder="Or Password (Firebase)" />
+        <input type="text" id="localUsername" placeholder="Username (teacher)">
+        <input type="password" id="localPassword" placeholder="Password">
+        <input type="email" id="loginEmail" placeholder="Or Email (Firebase)">
+        <input type="password" id="loginPassword" placeholder="Or Password (Firebase)">
         <button type="submit">Login</button>
     </form>
+
+    <div class="remember-container">
+        <input type="checkbox" id="rememberMe">
+        <label for="rememberMe">Skip welcome next time</label>
+    </div>
 
     <p class="divider">or</p>
 
@@ -148,6 +163,11 @@ const auth = firebase.auth();
 const LOCAL_USERNAME = 'teacher';
 const LOCAL_PASSWORD = 'eduflow123';
 
+// Auto-login / skip welcome
+if(localStorage.getItem('skipWelcome') === 'true' && localStorage.getItem('loggedIn') === 'true'){
+    window.location.href = "main.html";
+}
+
 // Login (local + Firebase)
 document.getElementById('loginForm').addEventListener('submit', function(e){
     e.preventDefault();
@@ -156,6 +176,12 @@ document.getElementById('loginForm').addEventListener('submit', function(e){
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
     const errDiv = document.getElementById('firebaseError');
+    const remember = document.getElementById('rememberMe').checked;
+
+    // Save skipWelcome if checkbox checked
+    if(remember){
+        localStorage.setItem('skipWelcome', 'true');
+    }
 
     // Check local credentials first
     if(localUser === LOCAL_USERNAME && localPass === LOCAL_PASSWORD){
@@ -198,11 +224,6 @@ document.getElementById('signupForm').addEventListener('submit', function(e){
         errDiv.style.display = 'block';
     });
 });
-
-// Auto-login / skip welcome
-if(localStorage.getItem('loggedIn') === 'true'){
-    window.location.href = "main.html";
-}
 </script>
 
 </body>
