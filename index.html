@@ -94,6 +94,7 @@ button {
 
 button:hover { opacity: 0.9; }
 
+/* Remember/Skip Welcome */
 .remember-wrapper {
     display: flex;
     justify-content: center;
@@ -101,14 +102,15 @@ button:hover { opacity: 0.9; }
 
 .remember {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
     font-size: 13px;
     color: #334155;
 }
 
 .remember input[type="checkbox"] {
-    transform: scale(1.1); /* slightly larger checkbox for alignment */
+    transform: scale(1.1); /* slightly larger for better visibility */
 }
 
 .error {
@@ -134,8 +136,8 @@ button:hover { opacity: 0.9; }
 
     <div class="remember-wrapper">
         <div class="remember">
-            <input type="checkbox" id="skipWelcome">
             <label for="skipWelcome">Skip welcome next time</label>
+            <input type="checkbox" id="skipWelcome">
         </div>
     </div>
 
