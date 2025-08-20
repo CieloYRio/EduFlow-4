@@ -1,148 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to EduFlow Planner</title>
-    <style>
-        /* Base Planner Style */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'SF Pro Display', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, ui-sans-serif, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 25%, #ecfdf5 50%, #f0fdf4 75%, #f8fafc 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            position: relative;
-        }
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(14, 165, 233, 0.05) 0%, transparent 50%);
-            pointer-events: none; z-index: -1;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduFlow Planner - Welcome</title>
+  <script type="module">
+    // Import Firebase SDKs
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } 
+      from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-        /* Welcome Container */
-        .container {
-            max-width: 500px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            box-shadow: 0 32px 64px rgba(14, 165, 233, 0.15), 0 16px 32px rgba(16, 185, 129, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(59, 130, 246, 0.1);
-            padding: 40px 30px;
-            text-align: center;
-        }
+    // Firebase config (yours)
+    const firebaseConfig = {
+      apiKey: "AIzaSyByRBm1bsDCH2GccIxyiuWttdqOzUB6-KQ",
+      authDomain: "eduflowplanner.firebaseapp.com",
+      projectId: "eduflowplanner",
+      storageBucket: "eduflowplanner.firebasestorage.app",
+      messagingSenderId: "201580924502",
+      appId: "1:201580924502:web:09e4e881899395a67335f7"
+    };
 
-        .container h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #0ea5e9, #10b981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
-        }
+    // Init Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-        .container p {
-            font-size: 1.1rem;
-            margin-bottom: 25px;
-            font-weight: 500;
-            color: #1e293b;
-        }
+    // Redirect if already logged in
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.href = "index.html";
+      }
+    });
 
-        input[type="text"], input[type="password"] {
-            width: 80%;
-            padding: 12px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
+    // Handle login
+    window.login = async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = "index.html";
+      } catch (err) {
+        alert("Login failed: " + err.message);
+      }
+    };
 
-        .button {
-            padding: 12px 25px;
-            margin-top: 20px;
-            font-size: 1rem;
-            font-weight: 600;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            background: linear-gradient(135deg, #0ea5e9, #10b981);
-            color: white;
-            transition: 0.3s;
-        }
+    // Handle signup
+    window.signup = async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        alert("Account created successfully! You can now log in.");
+      } catch (err) {
+        alert("Signup failed: " + err.message);
+      }
+    };
 
-        .button:hover { opacity: 0.9; }
-
-        .remember-container {
-            margin-top: 15px;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            color: #334155;
-        }
-
-        .error {
-            color: #ef4444;
-            margin-top: 10px;
-            display: none;
-        }
-    </style>
+    // Handle logout (you can add this button later in planner if needed)
+    window.logout = async () => {
+      await signOut(auth);
+      window.location.href = "welcome.html";
+    };
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #2563eb, #3b82f6, #1d4ed8);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .login-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 300px;
+    }
+    h1 {
+      color: #1d4ed8;
+      margin-bottom: 1rem;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .login-btn {
+      background: #2563eb;
+      color: white;
+    }
+    .signup-btn {
+      background: #10b981;
+      color: white;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to EduFlow Planner</h1>
-        <p>Get ready to organize learning efficiently, whether for homeschooling or professional education!</p>
-
-        <input type="text" id="username" placeholder="Username" />
-        <input type="password" id="password" placeholder="Password" />
-        <button class="button" onclick="login()">Enter Planner</button>
-        <div class="error" id="error-msg">Invalid username or password</div>
-
-        <div class="remember-container">
-            <input type="checkbox" id="rememberMe" />
-            <label for="rememberMe">Skip welcome next time</label>
-        </div>
-    </div>
-
-    <script>
-        // Local version credentials
-        const USERNAME = 'teacher';
-        const PASSWORD = 'eduflow123';
-
-        function login() {
-            const userInput = document.getElementById('username').value;
-            const passInput = document.getElementById('password').value;
-            const errorMsg = document.getElementById('error-msg');
-            const remember = document.getElementById('rememberMe').checked;
-
-            if(userInput === USERNAME && passInput === PASSWORD){
-                // store login status
-                if(remember){
-                    localStorage.setItem('skipWelcome', 'true');
-                }
-                localStorage.setItem('loggedIn', 'true');
-                window.location.href = "main.html"; // your planner
-            } else {
-                errorMsg.style.display = 'block';
-            }
-        }
-
-        // Auto-login / skip welcome
-        if(localStorage.getItem('loggedIn') === 'true' || localStorage.getItem('skipWelcome') === 'true'){
-            window.location.href = "main.html";
-        }
-    </script>
+  <div class="login-box">
+    <h1>EduFlow Planner</h1>
+    <p>Empowering educators to organize efficiently.</p>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button class="login-btn" onclick="login()">Login</button>
+    <button class="signup-btn" onclick="signup()">Sign Up</button>
+  </div>
 </body>
 </html>
-
