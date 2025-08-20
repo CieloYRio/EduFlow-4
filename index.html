@@ -3,83 +3,129 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EduFlow Planner - Login</title>
+<title>Welcome to EduFlow Planner</title>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+
 <style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
 body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 25%, #ecfdf5 50%, #f0fdf4 75%, #f8fafc 100%);
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background: linear-gradient(135deg, #1abc9c, #16a085);
 }
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(14, 165, 233, 0.05) 0%, transparent 50%);
+    pointer-events: none; z-index: -1;
+}
+
 .container {
+    max-width: 450px;
+    width: 100%;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 40px 30px;
     text-align: center;
-    background: #fff;
-    padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-    width: 350px;
+    box-shadow: 0 32px 64px rgba(14,165,233,0.15), 0 16px 32px rgba(16,185,129,0.1);
 }
+
 h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(45deg, #0ea5e9, #10b981);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin-bottom: 10px;
-    color: #2c3e50;
 }
-p.subtitle {
+
+.subtitle {
     margin-bottom: 25px;
-    color: #34495e;
+    font-weight: 500;
+    color: #1e293b;
     font-size: 14px;
     font-style: italic;
 }
+
 input {
-    display: block;
-    width: 100%;
+    width: 80%;
     padding: 12px;
     margin: 10px 0;
-    border: 1px solid #bdc3c7;
-    border-radius: 8px;
-    font-size: 14px;
-}
-button {
-    width: 100%;
-    padding: 12px;
-    background: #1abc9c;
-    color: white;
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
+    border-radius: 12px;
+    font-size: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+button {
+    width: 80%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg,#0ea5e9,#10b981);
+    color: white;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: 0.3s;
 }
-button:hover {
-    background: #16a085;
-}
-.skip {
-    display: block;
+
+button:hover { opacity: 0.9; }
+
+.remember {
     margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #334155;
     font-size: 13px;
-    color: #7f8c8d;
-    text-align: center;
-    cursor: pointer;
 }
-.skip:hover {
-    text-decoration: underline;
-}
+
 .error {
     color: #ef4444;
+    display: none;
     margin-top: 10px;
     font-size: 0.95rem;
-    display: none;
 }
 </style>
+</head>
+<body>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+<div class="container">
+    <h1>✨ Welcome to EduFlow Planner</h1>
+    <p class="subtitle">Get ready to organize your lessons, classes, and learning plans efficiently!</p>
+
+    <!-- Email / Password / License Key -->
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <input type="text" id="license" placeholder="Gumroad License Key" required>
+
+    <button id="authButton">Continue</button>
+
+    <div class="remember">
+        <input type="checkbox" id="skipWelcome">
+        <label for="skipWelcome">Skip welcome next time</label>
+    </div>
+
+    <div class="error" id="errorMsg"></div>
+</div>
 
 <script>
-// Firebase config
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyByRBm1bsDCH2GccIxyiuWttdqOzUB6-KQ",
   authDomain: "eduflowplanner.firebaseapp.com",
@@ -91,18 +137,17 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
-// Placeholder license validation function
+// Placeholder license validation
 function validateLicenseKey(key) {
-    // For now, accept any non-empty key
-    if (key && key.trim() !== "") return true;
-    return false;
+    return key && key.trim() !== "";
 }
 
-// Login / Signup with license
-function loginOrSignup() {
+// Single button handles login/signup
+document.getElementById('authButton').addEventListener('click', () => {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const licenseKey = document.getElementById('license').value;
+    const remember = document.getElementById('skipWelcome').checked;
     const errorDiv = document.getElementById('errorMsg');
 
     errorDiv.style.display = 'none';
@@ -115,7 +160,7 @@ function loginOrSignup() {
 
     auth.signInWithEmailAndPassword(email, password)
         .then(() => {
-            // Save license key in localStorage for demo
+            if(remember) localStorage.setItem('skipWelcome', 'true');
             localStorage.setItem('licenseKey', licenseKey);
             window.location.href = "main.html";
         })
@@ -123,6 +168,7 @@ function loginOrSignup() {
             if(error.code === 'auth/user-not-found'){
                 auth.createUserWithEmailAndPassword(email, password)
                     .then(() => {
+                        if(remember) localStorage.setItem('skipWelcome', 'true');
                         localStorage.setItem('licenseKey', licenseKey);
                         window.location.href = "main.html";
                     })
@@ -135,27 +181,8 @@ function loginOrSignup() {
                 errorDiv.style.display = 'block';
             }
         });
-}
-
-// Skip login
-function skipLogin() {
-    window.location.href = "main.html";
-}
+});
 </script>
-</head>
-<body>
-<div class="container">
-    <h1>Welcome to EduFlow Planner</h1>
-    <p class="subtitle">Get ready to organize your lessons, classes, and learning plans efficiently!</p>
 
-    <input type="email" id="email" placeholder="Enter your email" required>
-    <input type="password" id="password" placeholder="Enter your password" required>
-    <input type="text" id="license" placeholder="Enter your Gumroad License Key" required>
-    
-    <button onclick="loginOrSignup()">Continue</button>
-    <span class="skip" onclick="skipLogin()">Skip next time →</span>
-
-    <div class="error" id="errorMsg"></div>
-</div>
 </body>
 </html>
