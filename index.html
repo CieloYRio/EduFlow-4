@@ -19,6 +19,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
 }
 
 body::before {
@@ -49,15 +50,18 @@ h1 {
     background: linear-gradient(45deg, #0ea5e9, #10b981);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .subtitle {
-    margin-bottom: 25px;
-    font-weight: 500;
-    color: #1e293b;
-    font-size: 14px;
+    margin-bottom: 30px;
+    font-weight: 600;
+    font-size: 15px;
     font-style: italic;
+    color: #0ea5e9; /* enhanced color */
+    background: linear-gradient(120deg, #0ea5e9, #10b981);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 input {
@@ -87,12 +91,12 @@ button:hover { opacity: 0.9; }
 
 .remember {
     margin-top: 15px;
+    font-size: 13px;
     display: flex;
+    justify-content: center; /* centers the checkbox + label */
     align-items: center;
-    justify-content: center;
     gap: 8px;
     color: #334155;
-    font-size: 13px;
 }
 
 .error {
