@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to EduFlow Planner</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #2563eb, #3b82f6);
+            color: white;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: white;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to EduFlow Planner</h1>
+    <p>Get ready to organize your homeschool efficiently!</p>
+    <button onclick="enterPlanner()">Enter Planner</button>
+
+    <script>
+        function enterPlanner() {
+            window.location.href = "main.html"; // Replace with your actual main page filename
+        }
+    </script>
+</body>
+</html>
