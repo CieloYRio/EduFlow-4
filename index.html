@@ -163,8 +163,8 @@ const auth = firebase.auth();
 const LOCAL_USERNAME = 'teacher';
 const LOCAL_PASSWORD = 'eduflow123';
 
-// Auto-login / skip welcome
-if(localStorage.getItem('skipWelcome') === 'true' && localStorage.getItem('loggedIn') === 'true'){
+// Auto-redirect only if user chose to skip welcome previously
+if(localStorage.getItem('skipWelcome') === 'true'){
     window.location.href = "main.html";
 }
 
