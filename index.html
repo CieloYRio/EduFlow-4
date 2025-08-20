@@ -6,35 +6,103 @@
     <title>Welcome to EduFlow Planner</title>
     <style>
         body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #2563eb, #3b82f6);
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #1d4ed8 100%);
             color: white;
         }
+
+        .welcome-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .welcome-container h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .welcome-container p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 80%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
         button {
             margin-top: 20px;
-            padding: 10px 20px;
+            padding: 12px 25px;
             font-size: 1rem;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             background: white;
             color: #2563eb;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #e0e7ff;
+        }
+
+        .error {
+            color: #ff6961;
+            margin-top: 10px;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to EduFlow Planner</h1>
-    <p>Get ready to organize your homeschool efficiently!</p>
-    <button onclick="enterPlanner()">Enter Planner</button>
+    <div class="welcome-container">
+        <h1>Welcome to EduFlow Planner</h1>
+        <p>Get ready to organize learning efficiently, whether for homeschooling or professional education!</p>
+
+        <input type="text" id="username" placeholder="Username" />
+        <input type="password" id="password" placeholder="Password" />
+        <button onclick="login()">Enter Planner</button>
+        <div class="error" id="error-msg">Invalid username or password</div>
+    </div>
 
     <script>
-        function enterPlanner() {
-            window.location.href = "main.html"; // Replace with your actual main page filename
+        // Example credentials (for Version 1 local only)
+        const USERNAME = 'teacher';
+        const PASSWORD = 'eduflow123';
+
+        function login() {
+            const userInput = document.getElementById('username').value;
+            const passInput = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+
+            if(userInput === USERNAME && passInput === PASSWORD){
+                // store login status
+                localStorage.setItem('loggedIn', 'true');
+                window.location.href = "main.html"; // your planner
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        // auto-login if already logged in
+        if(localStorage.getItem('loggedIn') === 'true'){
+            window.location.href = "main.html";
         }
     </script>
 </body>
