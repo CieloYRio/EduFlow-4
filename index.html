@@ -4,227 +4,77 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Welcome to EduFlow Planner</title>
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-    font-family: 'SF Pro Display', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, ui-sans-serif, Helvetica, Arial, sans-serif;
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 25%, #ecfdf5 50%, #f0fdf4 75%, #f8fafc 100%);
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #f0f9ff, #ecfdf5);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    position: relative;
 }
-body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(14, 165, 233, 0.05) 0%, transparent 50%);
-    pointer-events: none; z-index: -1;
-}
-
-.auth-container {
-    max-width: 450px;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.95);
+.container {
+    background: rgba(255,255,255,0.95);
     backdrop-filter: blur(20px);
     border-radius: 24px;
-    box-shadow: 0 32px 64px rgba(14, 165, 233, 0.15), 0 16px 32px rgba(16, 185, 129, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(59, 130, 246, 0.1);
     padding: 40px 30px;
     text-align: center;
-    animation: fadeIn 1s ease-in-out;
+    max-width: 400px;
+    width: 100%;
 }
-
-.auth-container h2 {
-    font-size: 2.5rem;
-    font-weight: 800;
+h1 {
     background: linear-gradient(45deg, #0ea5e9, #10b981);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 15px;
 }
-
-.auth-container p {
-    font-size: 1.1rem;
-    margin-bottom: 25px;
-    font-weight: 500;
-    color: #1e293b;
-}
-
-.auth-container input {
-    width: 80%;
-    padding: 12px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.auth-container button {
-    width: 80%;
-    padding: 12px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #0ea5e9, #10b981);
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.auth-container button:hover { opacity: 0.9; }
-
-.divider {
-    margin: 15px 0;
-    font-size: 0.9em;
-    color: gray;
-}
-
-.remember-container {
-    margin-top: 15px;
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    color: #334155;
-}
-
-.error-msg {
-    color: #ef4444;
-    margin-top: 10px;
-    display: none;
-    font-size: 0.95rem;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+input { width: 80%; padding: 10px; margin: 10px 0; border-radius: 12px; border: none; }
+button { padding: 12px 25px; border: none; border-radius: 12px; background: linear-gradient(135deg,#0ea5e9,#10b981); color: white; cursor: pointer; }
+.remember { margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.error { color: red; display: none; margin-top: 10px; }
 </style>
 </head>
 <body>
 
-<div class="auth-container">
-    <h2>✨ Welcome to EduFlow Planner</h2>
-    <p>Please sign in to access your planner</p>
+<div class="container">
+    <h1>Welcome to EduFlow Planner</h1>
+    <p>Login to access your planner</p>
 
-    <!-- Login Form -->
-    <form id="loginForm">
-        <input type="text" id="localUsername" placeholder="Username (teacher)">
-        <input type="password" id="localPassword" placeholder="Password">
-        <input type="email" id="loginEmail" placeholder="Or Email (Firebase)">
-        <input type="password" id="loginPassword" placeholder="Or Password (Firebase)">
-        <button type="submit">Login</button>
-    </form>
+    <!-- Local Login -->
+    <input type="text" id="localUser" placeholder="Username">
+    <input type="password" id="localPass" placeholder="Password">
+    <button id="localLogin">Login</button>
 
-    <div class="remember-container">
-        <input type="checkbox" id="rememberMe">
-        <label for="rememberMe">Skip welcome next time</label>
+    <div class="remember">
+        <input type="checkbox" id="skipWelcome">
+        <label for="skipWelcome">Skip welcome next time</label>
     </div>
 
-    <p class="divider">or</p>
-
-    <!-- Signup Form -->
-    <form id="signupForm">
-        <input type="email" id="signupEmail" placeholder="New Email" required>
-        <input type="password" id="signupPassword" placeholder="New Password" required>
-        <button type="submit">Sign Up</button>
-    </form>
-
-    <div class="error-msg" id="firebaseError"></div>
+    <div class="error" id="errorMsg">Invalid username or password</div>
 </div>
 
 <script>
-// Firebase config
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+// Clear previous login for testing
+// localStorage.removeItem('loggedIn');
+// localStorage.removeItem('skipWelcome');
 
-// Local credentials
-const LOCAL_USERNAME = 'teacher';
-const LOCAL_PASSWORD = 'eduflow123';
+const LOCAL_USER = 'teacher';
+const LOCAL_PASS = 'eduflow123';
 
-// Auto-redirect only if user chose to skip welcome previously
-if(localStorage.getItem('skipWelcome') === 'true'){
-    window.location.href = "main.html";
-}
+document.getElementById('localLogin').addEventListener('click', () => {
+    const username = document.getElementById('localUser').value;
+    const password = document.getElementById('localPass').value;
+    const remember = document.getElementById('skipWelcome').checked;
+    const errorDiv = document.getElementById('errorMsg');
 
-// Login (local + Firebase)
-document.getElementById('loginForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    const localUser = document.getElementById('localUsername').value;
-    const localPass = document.getElementById('localPassword').value;
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    const errDiv = document.getElementById('firebaseError');
-    const remember = document.getElementById('rememberMe').checked;
-
-    // Save skipWelcome if checkbox checked
-    if(remember){
-        localStorage.setItem('skipWelcome', 'true');
-    }
-
-    // Check local credentials first
-    if(localUser === LOCAL_USERNAME && localPass === LOCAL_PASSWORD){
+    if(username === LOCAL_USER && password === LOCAL_PASS){
+        if(remember) localStorage.setItem('skipWelcome', 'true');
         localStorage.setItem('loggedIn', 'true');
-        window.location.href = "main.html";
-        return;
-    }
-
-    // Then check Firebase if local didn't match
-    if(email && password){
-        auth.signInWithEmailAndPassword(email, password)
-        .then(userCredential => {
-            localStorage.setItem('loggedIn', 'true');
-            window.location.href = "main.html";
-        })
-        .catch(error => {
-            errDiv.textContent = error.message;
-            errDiv.style.display = 'block';
-        });
+        window.location.href = 'main.html';
     } else {
-        errDiv.textContent = 'Invalid credentials';
-        errDiv.style.display = 'block';
+        errorDiv.style.display = 'block';
     }
-});
-
-// Signup
-document.getElementById('signupForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    const email = document.getElementById('signupEmail').value;
-    const password = document.getElementById('signupPassword').value;
-    const errDiv = document.getElementById('firebaseError');
-
-    auth.createUserWithEmailAndPassword(email, password)
-    .then(userCredential => {
-        localStorage.setItem('loggedIn', 'true');
-        window.location.href = "main.html";
-    })
-    .catch(error => {
-        errDiv.textContent = error.message;
-        errDiv.style.display = 'block';
-    });
 });
 </script>
-
 </body>
 </html>
