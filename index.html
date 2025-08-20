@@ -1,98 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EduFlow Planner</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduFlow Planner - Welcome</title>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      background: linear-gradient(135deg, #22c1c3, #2f8eed);
       color: #fff;
-      text-align: center;
       height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-
-    .container {
-      background: rgba(255, 255, 255, 0.1);
+    .welcome-container {
+      background: rgba(255, 255, 255, 0.15);
       padding: 40px;
       border-radius: 20px;
-      box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
       width: 100%;
       max-width: 420px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
     }
-
     h1 {
-      font-size: 2rem;
-      font-weight: bold;
       margin-bottom: 10px;
+      font-size: 2rem;
     }
-
-    p {
-      font-size: 1rem;
-      margin-bottom: 20px;
+    p.subtitle {
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+      font-style: italic;
+      font-weight: 500;
+      color: #f0f9ff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
     }
-
     input {
-      width: 90%;
+      width: 100%;
       padding: 12px;
-      margin: 10px 0;
-      border-radius: 10px;
+      margin: 8px 0;
       border: none;
-      outline: none;
+      border-radius: 8px;
       font-size: 1rem;
     }
-
     button {
-      width: 95%;
-      padding: 12px;
-      margin-top: 15px;
+      background: #2563eb;
       border: none;
-      border-radius: 10px;
-      background: #fff;
-      color: #0072ff;
+      color: #fff;
+      padding: 12px;
+      border-radius: 8px;
       font-size: 1rem;
-      font-weight: bold;
       cursor: pointer;
+      width: 100%;
+      margin-top: 15px;
       transition: background 0.3s ease;
     }
-
     button:hover {
-      background: #f1f1f1;
+      background: #1d4ed8;
     }
-
-    .skip-link {
-      margin-top: 15px;
+    .toggle-link {
       display: block;
+      margin-top: 15px;
       font-size: 0.9rem;
-      color: #fff;
-      text-decoration: underline;
       cursor: pointer;
+      color: #dbeafe;
+      text-decoration: underline;
+    }
+    .skip-link {
+      display: block;
+      margin-top: 25px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: #fff;
+      font-weight: 500;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Welcome to EduFlow Planner ✨</h1>
-    <p>Smart Curriculum Design for Modern Educators</p>
-    <p><em>Get ready to organize, simplify, and thrive in your teaching journey!</em></p>
-
+  <div class="welcome-container">
+    <h1>Welcome to EduFlow Planner</h1>
+    <p class="subtitle">Get ready to organize your lessons, classes, and learning plans efficiently!</p>
+    
     <input type="email" id="email" placeholder="Email" />
     <input type="password" id="password" placeholder="Password" />
-    <button onclick="login()">Login</button>
-    <button onclick="signup()">Sign Up</button>
-    <span class="skip-link" onclick="skip()">Skip next time →</span>
+    <button id="authButton">Log In / Sign Up</button>
+    <span id="toggleText" class="toggle-link">Need to sign up?</span>
+    
+    <span class="skip-link" onclick="enterApp()">Skip next time</span>
   </div>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script>
-    // ✅ Your Firebase Config
+    // ✅ Your Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyByRBm1bsDCH2GccIxyiuWttdqOzUB6-KQ",
       authDomain: "eduflowplanner.firebaseapp.com",
@@ -101,35 +104,32 @@
       messagingSenderId: "201580924502",
       appId: "1:201580924502:web:09e4e881899395a67335f7"
     };
-
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
+    firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    function login() {
+    let isLogin = true;
+    document.getElementById("toggleText").onclick = function () {
+      isLogin = !isLogin;
+      document.getElementById("authButton").innerText = isLogin ? "Log In" : "Sign Up";
+      this.innerText = isLogin ? "Need to sign up?" : "Already have an account?";
+    };
+
+    document.getElementById("authButton").onclick = function () {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
-      auth.signInWithEmailAndPassword(email, password)
-        .then(() => {
-          alert("Login successful!");
-          window.location.href = "planner.html"; // redirect to main planner
-        })
-        .catch(error => alert(error.message));
-    }
+      if (isLogin) {
+        auth.signInWithEmailAndPassword(email, password)
+          .then(() => enterApp())
+          .catch(err => alert(err.message));
+      } else {
+        auth.createUserWithEmailAndPassword(email, password)
+          .then(() => enterApp())
+          .catch(err => alert(err.message));
+      }
+    };
 
-    function signup() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      auth.createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          alert("Signup successful!");
-          window.location.href = "planner.html"; // redirect to main planner
-        })
-        .catch(error => alert(error.message));
-    }
-
-    function skip() {
-      window.location.href = "planner.html";
+    function enterApp() {
+      window.location.href = "planner.html"; // your planner page
     }
   </script>
 </body>
