@@ -179,7 +179,7 @@ button:hover { opacity: 0.9; }
     <!-- Language Selection -->
     <div class="language-selection">
         <label for="welcomeLanguage">🌐 Language / Idioma / Langue / Sprache / 言語 / 언어</label>
-        <select id="welcomeLanguage" onchange="changeWelcomeLanguage()">
+        <select id="welcomeLanguage">
             <option value="en">English</option>
             <option value="es">Español</option>
             <option value="fr">Français</option>
@@ -353,7 +353,13 @@ function changeWelcomeLanguage() {
 // Load saved language on page load
 document.addEventListener('DOMContentLoaded', function() {
     const savedLang = localStorage.getItem('selectedLanguage') || 'en';
-    document.getElementById('welcomeLanguage').value = savedLang;
+    const languageSelect = document.getElementById('welcomeLanguage');
+    languageSelect.value = savedLang;
+    
+    // Add event listener for language changes
+    languageSelect.addEventListener('change', changeWelcomeLanguage);
+    
+    // Apply initial language
     changeWelcomeLanguage();
 });
 

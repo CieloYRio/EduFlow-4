@@ -546,6 +546,24 @@
   </h1>
   <p id="headerSubtitle">Smart Curriculum Design for Modern Educators</p>
 </div>
+
+    <!-- Student Profile Management Section -->
+    <div style="background: rgba(255, 255, 255, 0.95); padding: 16px; margin: 16px; border-radius: 12px; border-left: 4px solid #3b82f6;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="font-size: 1.1rem; font-weight: 600; color: #1f2937;">
+                    👨‍👩‍👧‍👦 Student Profile:
+                </div>
+                <select id="studentProfileSelect" style="padding: 8px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 0.9rem; background: white;" onchange="switchStudentProfile()">
+                    <option value="default">Main Student Profile</option>
+                </select>
+                <button onclick="addNewStudentProfile()" style="padding: 6px 12px; background: #10b981; color: white; border: none; border-radius: 6px; font-size: 0.85rem; cursor: pointer;">+ Add Student</button>
+            </div>
+            <div style="font-size: 0.85rem; color: #6b7280;">
+                <span id="currentProfileInfo">Managing curriculum for: Main Student</span>
+            </div>
+        </div>
+    </div>
     
        <!-- Participant Information Section -->
 <div id="headerSubtitle" style="padding: 20px 40px; background: linear-gradient(135deg, #f0f9ff 0%, #ecfdf5 100%); border-bottom: 1px solid rgba(148, 163, 184, 0.2);">
@@ -4494,7 +4512,136 @@
                 select.value = savedLang;
                 changeLanguage(savedLang);
             }
+            
+            // Load student profiles on page load
+            loadStudentProfiles();
         });
+
+        // Student Profile Management Functions
+        function loadStudentProfiles() {
+            const profiles = JSON.parse(localStorage.getItem('curricrafter_student_profiles') || '[]');
+            const select = document.getElementById('studentProfileSelect');
+            const currentProfile = localStorage.getItem('curricrafter_current_profile') || 'default';
+            
+            // Clear existing options except default
+            select.innerHTML = '<option value="default">Main Student Profile</option>';
+            
+            // Add saved profiles
+            profiles.forEach(profile => {
+                const option = document.createElement('option');
+                option.value = profile.id;
+                option.textContent = `${profile.name} (Grade ${profile.grade})`;
+                select.appendChild(option);
+            });
+            
+            // Set current profile
+            select.value = currentProfile;
+            updateCurrentProfileInfo();
+        }
+
+        function switchStudentProfile() {
+            const selectedProfile = document.getElementById('studentProfileSelect').value;
+            localStorage.setItem('curricrafter_current_profile', selectedProfile);
+            updateCurrentProfileInfo();
+            
+            // Auto-save current data before switching
+            const currentData = gatherAppData();
+            const currentProfileKey = `curricrafter_profile_${selectedProfile}`;
+            localStorage.setItem(currentProfileKey, JSON.stringify(currentData));
+            
+            // Load data for selected profile
+            loadProfileData(selectedProfile);
+            
+            alert(`✅ Switched to profile: ${getProfileDisplayName(selectedProfile)}\n\nYour previous work has been saved automatically.`);
+        }
+
+        function addNewStudentProfile() {
+            const name = prompt('Enter student name:');
+            if (!name || name.trim() === '') return;
+            
+            const grade = prompt('Enter grade level (e.g., K, 1, 2, 3...12):');
+            if (!grade || grade.trim() === '') return;
+            
+            const profiles = JSON.parse(localStorage.getItem('curricrafter_student_profiles') || '[]');
+            const newProfile = {
+                id: `profile_${Date.now()}`,
+                name: name.trim(),
+                grade: grade.trim(),
+                created: new Date().toISOString()
+            };
+            
+            profiles.push(newProfile);
+            localStorage.setItem('curricrafter_student_profiles', JSON.stringify(profiles));
+            
+            // Add to dropdown
+            const select = document.getElementById('studentProfileSelect');
+            const option = document.createElement('option');
+            option.value = newProfile.id;
+            option.textContent = `${newProfile.name} (Grade ${newProfile.grade})`;
+            select.appendChild(option);
+            
+            // Switch to new profile
+            select.value = newProfile.id;
+            switchStudentProfile();
+        }
+
+        function getProfileDisplayName(profileId) {
+            if (profileId === 'default') return 'Main Student';
+            
+            const profiles = JSON.parse(localStorage.getItem('curricrafter_student_profiles') || '[]');
+            const profile = profiles.find(p => p.id === profileId);
+            return profile ? `${profile.name} (Grade ${profile.grade})` : 'Unknown Profile';
+        }
+
+        function updateCurrentProfileInfo() {
+            const currentProfile = document.getElementById('studentProfileSelect').value;
+            const displayName = getProfileDisplayName(currentProfile);
+            document.getElementById('currentProfileInfo').textContent = `Managing curriculum for: ${displayName}`;
+        }
+
+        function loadProfileData(profileId) {
+            const profileKey = `curricrafter_profile_${profileId}`;
+            const savedData = localStorage.getItem(profileKey);
+            
+            if (savedData) {
+                try {
+                    const data = JSON.parse(savedData);
+                    // Restore form data
+                    if (data.forms) {
+                        Object.keys(data.forms).forEach(fieldId => {
+                            const field = document.getElementById(fieldId);
+                            if (field) field.value = data.forms[fieldId] || '';
+                        });
+                    }
+                    
+                    // Update header info
+                    updateHeaderInfo();
+                } catch (error) {
+                    console.error('Error loading profile data:', error);
+                }
+            }
+        }
+
+        function gatherAppData() {
+            // Gather current form data for saving
+            return {
+                forms: {
+                    learnerName: document.getElementById('learnerName')?.value || '',
+                    teacherName: document.getElementById('teacherName')?.value || '',
+                    schoolName: document.getElementById('schoolName')?.value || '',
+                    gradeLevel: document.getElementById('gradeLevel')?.value || '',
+                    academicYear: document.getElementById('academicYear')?.value || '',
+                    globalCountryRegion: document.getElementById('globalCountryRegion')?.value || '',
+                    globalCalendarSystem: document.getElementById('globalCalendarSystem')?.value || '',
+                    globalSchoolYearStart: document.getElementById('globalSchoolYearStart')?.value || '',
+                    globalAcademicYear: document.getElementById('globalAcademicYear')?.value || '',
+                    globalGradeLevel: document.getElementById('globalGradeLevel')?.value || '',
+                    globalInterfaceLanguage: document.getElementById('globalInterfaceLanguage')?.value || 'en'
+                },
+                timestamp: new Date().toISOString(),
+                version: '2.0'
+            };
+        }
     </script>
 </body>
 </html>
