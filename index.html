@@ -320,6 +320,11 @@ const welcomeTranslations = {
     }
 };
 
+// Enhanced license validation with better UX
+function validateLicenseKey(key) {
+    return key && key.trim() !== "";
+}
+
 // Language change function for welcome page
 function changeWelcomeLanguage() {
     const selectedLang = document.getElementById('welcomeLanguage').value;
@@ -351,11 +356,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('welcomeLanguage').value = savedLang;
     changeWelcomeLanguage();
 });
-
-// Enhanced license validation with better UX
-function validateLicenseKey(key) {
-    return key && key.trim() !== "";
-}
 
 // Single button handles login/signup
 document.getElementById('authButton').addEventListener('click', () => {
